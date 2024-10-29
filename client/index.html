@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Left Side -->
+            <div class="col-md-6 left-side">
+                <h2>Input Section</h2>
+                <form id="inputForm">
+                    <div class="form-group">
+                        <label for="textInput">Text Input:</label>
+                        <textarea class="form-control" id="textInput" rows="10" placeholder="Enter your text here..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="fileInput">File Input:</label>
+                        <input type="file" class="form-control-file" id="fileInput">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+
+            <!-- Right Side -->
+            <div class="col-md-6 right-side">
+                <h2>Result Section</h2>
+                <span id="timer" style="display: none; font-weight: bold; margin-left: 10px;">25s</span>
+                <div id="resultOutput" class="border p-3" style="height: 100%;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
