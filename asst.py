@@ -1,5 +1,8 @@
 import openai
 
+openai.api_key = ""
+asst_id = ""
+
 response = openai.ChatCompletion.create(
     model="gpt-4",
     messages=[
