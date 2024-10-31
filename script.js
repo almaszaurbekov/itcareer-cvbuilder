@@ -1,3 +1,5 @@
+const prodUrl = "https://almaszaurbekov.github.io/itcareer-cvbuilder";
+
 function startTimer(duration, display) {
     let timer = duration;
     const interval = setInterval(() => {
@@ -101,7 +103,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function(event)
     .then(data => {
         if (data.access_token) {
             localStorage.setItem('jwtToken', data.access_token); // Save token in localStorage
-            window.location.href = 'http://127.0.0.1:5500/';
+            window.location.href = prodUrl;
         } else {
             alert('Login failed. Please check your credentials.');
         }
@@ -127,7 +129,7 @@ document.getElementById('registerForm')?.addEventListener('submit', function(eve
     .then(data => {
         if (data.access_token) {
             localStorage.setItem('jwtToken', data.access_token);
-            window.location.href = 'http://127.0.0.1:5500/';
+            window.location.href = prodUrl;
         } else {
             alert('Registration failed.');
         }
@@ -137,24 +139,24 @@ document.getElementById('registerForm')?.addEventListener('submit', function(eve
 
 document.getElementById('logout')?.addEventListener('click', function(event) {
     localStorage.removeItem('jwtToken');
-    window.location.href = 'http://127.0.0.1:5500/pages/login.html';
+    window.location.href = `${prodUrl}/pages/login`;
 });
 
 // Check if the current page is "/" and the token is none
-if (window.location.href === 'http://127.0.0.1:5500/') {
+if (window.location.href === prodUrl) {
     if(localStorage.getItem('jwtToken') == null) {
-        window.location.href = 'http://127.0.0.1:5500/pages/login.html';
+        window.location.href = `${prodUrl}/pages/login`;
     }
 }
 
-if (window.location.href === 'http://127.0.0.1:5500/pages/login.html') {
+if (window.location.href === `${prodUrl}/pages/login`) {
     if(localStorage.getItem('jwtToken') != null) {
-        window.location.href = 'http://127.0.0.1:5500/';
+        window.location.href = prodUrl;
     }
 }
 
-if (window.location.href === 'http://127.0.0.1:5500/pages/register.html') {
+if (window.location.href === `${prodUrl}/pages/register`) {
     if(localStorage.getItem('jwtToken') != null) {
-        window.location.href = 'http://127.0.0.1:5500/';
+        window.location.href = window.location.href = prodUrl;
     }
 }
