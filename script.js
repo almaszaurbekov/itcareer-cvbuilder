@@ -143,7 +143,7 @@ document.getElementById('logout')?.addEventListener('click', function(event) {
 });
 
 // Check if the current page is "/" and the token is none
-if (window.location.href === prodUrl) {
+if (window.location.href === prodUrl + "/") {
     if(localStorage.getItem('jwtToken') == null) {
         window.location.href = `${prodUrl}/pages/login`;
     }
