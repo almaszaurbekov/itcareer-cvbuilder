@@ -42,9 +42,14 @@ document.getElementById('inputForm')?.addEventListener('submit', function(event)
     startTimer(25, timerDisplay);
     document.getElementById('resultOutput').innerHTML = '';
 
+    const token = localStorage.getItem('jwtToken');
+
     // Make the API request
-    fetch('http://127.0.0.1:5000/upgrade_bullet_points', { // Replace with your API URL
+    fetch('http://127.0.0.1:5000/upgrade_bullet_points', {
         method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         body: formData // Send the FormData as the request body
     })
     .then(response => response.json())
@@ -80,44 +85,76 @@ document.getElementById('inputForm')?.addEventListener('submit', function(event)
 
 // Function to handle Login
 document.getElementById('loginForm')?.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
 
-    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    fetch('http://127.0.0.1:5000/login', { // Replace with your API URL
+    fetch('http://127.0.0.1:5000/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, password })
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
-        document.cookie = "sessionId=abc123; path=/; secure; SameSite=Strict;";
+        if (data.access_token) {
+            localStorage.setItem('jwtToken', data.access_token); // Save token in localStorage
+            window.location.href = 'http://127.0.0.1:5500/';
+        } else {
+            alert('Login failed. Please check your credentials.');
+        }
     })
     .catch(error => console.error('Error:', error));
 });
 
 // Function to handle Registration
 document.getElementById('registerForm')?.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
 
     const email = document.getElementById('registerEmail').value;
     const password = document.getElementById('registerPassword').value;
-    const username = document.getElementById('registerUsername').value;
 
-    fetch('http://127.0.0.1:5000/register', { // Replace with your API URL
+    fetch('http://127.0.0.1:5000/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password, username })
+        body: JSON.stringify({ email, password })
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
+        if (data.access_token) {
+            localStorage.setItem('jwtToken', data.access_token);
+            window.location.href = 'http://127.0.0.1:5500/';
+        } else {
+            alert('Registration failed.');
+        }
     })
     .catch(error => console.error('Error:', error));
 });
+
+document.getElementById('logout')?.addEventListener('click', function(event) {
+    localStorage.removeItem('jwtToken');
+    window.location.href = 'http://127.0.0.1:5500/pages/login.html';
+});
+
+// Check if the current page is "/" and the token is none
+if (window.location.href === 'http://127.0.0.1:5500/') {
+    if(localStorage.getItem('jwtToken') == null) {
+        window.location.href = 'http://127.0.0.1:5500/pages/login.html';
+    }
+}
+
+if (window.location.href === 'http://127.0.0.1:5500/pages/login.html') {
+    if(localStorage.getItem('jwtToken') != null) {
+        window.location.href = 'http://127.0.0.1:5500/';
+    }
+}
+
+if (window.location.href === 'http://127.0.0.1:5500/pages/register.html') {
+    if(localStorage.getItem('jwtToken') != null) {
+        window.location.href = 'http://127.0.0.1:5500/';
+    }
+}

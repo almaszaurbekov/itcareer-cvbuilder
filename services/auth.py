@@ -1,5 +1,6 @@
-from flask import jsonify, request, session
+from flask import jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token
 import sqlite3
 
 # Функция для подключения к базе данных
@@ -10,7 +11,6 @@ def get_db():
 
 def register():
     data = request.get_json()
-    username = data.get('username')
     password = data.get('password')
     email = data.get('email')
 
@@ -19,34 +19,36 @@ def register():
 
     try:
         with get_db() as conn:
-            conn.execute('INSERT INTO Users (username, password_hash, email) VALUES (?, ?, ?)',
-                         (username, password_hash, email))
-            return jsonify({'message': 'Registration successful!'}), 201
+            cursor = conn.cursor()
+            cursor.execute('INSERT INTO Users (password_hash, email) VALUES (?, ?)',
+                         (password_hash, email))
+            user_id = cursor.lastrowid
+            access_token = create_access_token(identity=user_id)
+            return jsonify({'message': 'Registration successful!', 'access_token': access_token}), 201
     except sqlite3.IntegrityError:
-        return jsonify({'message': 'Username or email already exists.'}), 400
+        return jsonify({'message': 'Email already exists.'}), 400
 
 def login():
     data = request.get_json()
-    username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
 
     with get_db() as conn:
-        user = conn.execute('SELECT * FROM Users WHERE username = ?', (username,)).fetchone()
+        user = conn.execute('SELECT * FROM Users WHERE email = ?', (email,)).fetchone()
 
         if user and check_password_hash(user['password_hash'], password):
-            session['user_id'] = user['user_id']
-            print(session)
-            return jsonify({'message': 'Login successful!', 'username': user['username']}), 200
+            access_token = create_access_token(identity=user['user_id'])
+            return jsonify({'message': 'Login successful!', 'email': user['email'], 'access_token': access_token}), 200
         else:
             return jsonify({'message': 'Invalid username or password.'}), 401
 
 def check_access():
-    print(session)
+    user_id = get_jwt_identity()
+    print(user_id)
+
+    return jsonify({'message': f'Welcome, user {session["user_id"]}!'}), 200
+
     if 'user_id' not in session:
         return jsonify({'message': 'You need to log in first.'}), 401
 
     return jsonify({'message': f'Welcome, user {session["user_id"]}!'}), 200
-
-def logout():
-    session.pop('user_id', None)
-    return jsonify({'message': 'You have been logged out.'}), 200

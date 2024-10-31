@@ -4,11 +4,12 @@ from datetime import timedelta
 from services.config import app_secret
 import services.cvbuild as cvbuild
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 
 app = Flask(__name__)
 app.secret_key = app_secret
-app.permanent_session_lifetime = timedelta(days=30)
 CORS(app, supports_credentials=True)
+jwt = JWTManager(app)
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -19,14 +20,12 @@ def login():
     return auth.login()
 
 @app.route('/check_access', methods=['GET'])
+@jwt_required()
 def check_access():
     return auth.check_access()
 
-@app.route('/logout', methods=['POST'])
-def logout():
-    return auth.logout()
-
 @app.route('/upgrade_bullet_points', methods=['POST'])
+@jwt_required()
 def upgrade_bullet_points():
     return cvbuild.upgrade_bullet_points()
 

@@ -1,7 +1,6 @@
 Users
 ------
 user_id (PK)
-username
 password_hash
 email
 created_at
