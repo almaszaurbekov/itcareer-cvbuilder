@@ -27,6 +27,7 @@ document.getElementById('inputForm')?.addEventListener('submit', function(event)
         // Validate file type
         if (fileType !== 'application/pdf' && fileExtension !== 'pdf') {
             alert('Please upload a valid PDF file.'); // Alert user for invalid file type
+            document.getElementById('fileInput').value = '';
             return; // Stop further execution
         }
     }
@@ -43,6 +44,8 @@ document.getElementById('inputForm')?.addEventListener('submit', function(event)
     document.getElementById('resultOutput').innerHTML = '';
 
     const token = localStorage.getItem('jwtToken');
+
+    document.getElementById('fileInput').value = '';
 
     // Make the API request
     fetch('http://127.0.0.1:5000/upgrade_bullet_points', {
@@ -158,3 +161,49 @@ if (window.location.href === 'http://127.0.0.1:5500/pages/register.html') {
         window.location.href = 'http://127.0.0.1:5500/';
     }
 }
+
+// const skillInput = document.getElementById('skillInput');
+// const addSkillButton = document.getElementById('addSkillButton');
+// const skillsContainer = document.getElementById('skillsContainer');
+// let skillId = 1;
+// let skills = {};
+
+// // Функция для добавления навыка
+// function addSkill() {
+//     const skillText = skillInput.value.trim();
+//     if (skillText) {
+//         let skillTag = document.createElement('span');
+//         skillTag.className = 'tag';
+//         skillTag.id = skillId;
+//         skillTag.textContent = skillText + " | ";
+//         skills[skillId++] = skillText;
+
+//         // Создаем крестик для удаления тега
+//         const removeTag = document.createElement('span');
+//         removeTag.textContent = '✖'; // Символ крестика
+//         removeTag.className = 'remove-tag';
+//         removeTag.onclick = function() {
+//             delete skills[skillTag.id];
+//             skillsContainer.removeChild(skillTag); // Удаляем тег при нажатии на крестик
+//         };
+
+//         // Добавляем крестик в тег
+//         skillTag.appendChild(removeTag);
+
+//         // Добавляем тег в контейнер
+//         skillsContainer.appendChild(skillTag);
+
+//         // Очищаем поле ввода
+//         skillInput.value = '';
+//     }
+// }
+
+// // Обработчик события на кнопку
+// addSkillButton.addEventListener('click', addSkill);
+
+// // Обработчик события на нажатие клавиши Enter
+// skillInput.addEventListener('keypress', function(event) {
+//     if (event.key === 'Enter') {
+//         addSkill();
+//     }
+// });

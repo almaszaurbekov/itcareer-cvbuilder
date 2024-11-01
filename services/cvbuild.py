@@ -41,28 +41,24 @@ def extract_work_experience(pdf_path):
 
 def upgrade_bullet_points():
     if 'pdf_resume' not in request.files:
-        return jsonify({"error": "No file part"}), 400
+        return jsonify({"message": "No file part"}), 400
     
     file = request.files['pdf_resume']
     if file.filename == '':
-        return jsonify({"error": "No selected file"}), 400
+        return jsonify({"message": "No selected file"}), 400
 
     # Проверка на MIME-тип
     if file.mimetype != 'application/pdf':
-        return jsonify({"error": "Invalid file type. Only PDF allowed."}), 400
+        return jsonify({"message": "Invalid file type. Only PDF allowed."}), 400
     
-    # Сохраняем файл и извлекаем текст
     if file and file.filename.endswith('.pdf'):
         pdf_path = f"resumes/{file.filename}"
         file.save(pdf_path)
 
-        # Извлекаем текст из PDF
         pdf_text = extract_work_experience(pdf_path)
-        
-        # Получаем длинный текст из тела запроса
         description = request.form.get('job_vacancy_description', '')
+        # tech_skills = request.form.get('technical_skills', '')
 
-        # Возвращаем результат
         return openai_asst.upgrade_bullet_points(description, '\n'.join(pdf_text))
 
-    return jsonify({"error": "Invalid file type. Only PDF allowed."})
+    return jsonify({"message": "Invalid file type. Only PDF allowed."}), 400

@@ -6,3 +6,25 @@ body {
     max-width: 400px;
     margin-top: 100px;
 }
+
+.header {
+    background-color: #f8f9fa; /* Светлый фон */
+    padding: 10px 20px; /* Отступы */
+    border-bottom: 1px solid #dee2e6; /* Нижняя граница */
+    margin-bottom: 40px;
+}
+
+.tag {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.remove-tag {
+    cursor: pointer; /* Курсор в виде указателя при наведении */
+    color: white;
+    font-weight: bold;
+}

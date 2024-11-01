@@ -1,4 +1,5 @@
 venv
 config.json
-resume_threads.db
+sqlite.db
 resumes
+dev.py

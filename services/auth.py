@@ -5,7 +5,7 @@ import sqlite3
 
 # Функция для подключения к базе данных
 def get_db():
-    conn = sqlite3.connect('resume_threads.db')
+    conn = sqlite3.connect('sqlite.db')
     conn.row_factory = sqlite3.Row
     return conn
 

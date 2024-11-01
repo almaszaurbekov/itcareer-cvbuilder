@@ -2,16 +2,21 @@ Users
 ------
 user_id (PK)
 password_hash
+is_premium
 email
 created_at
 updated_at
 
-Threads
+Resumes
 -------
-thread_id (PK)
+resume_id (PK)
 user_id (FK)
+resume_filename
 created_at
-updated_at
-result
-error_message
-status
+
+Skills
+-------
+skill_id (PK)
+user_id (FK)
+skill_text
+created_at
